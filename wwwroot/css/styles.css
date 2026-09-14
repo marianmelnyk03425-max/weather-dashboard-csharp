@@ -1,0 +1,608 @@
+/* ============================================
+   JARVIS Weather Dashboard - Main Styles
+   Iron Man HUD inspired UI
+   ============================================ */
+
+:root {
+    --primary-color: #00d4ff;
+    --secondary-color: #ff6b00;
+    --accent-color: #00ff88;
+    --dark-bg: #0a0e27;
+    --panel-bg: rgba(10, 14, 39, 0.7);
+    --border-color: #00d4ff;
+    --text-primary: #00d4ff;
+    --text-secondary: #00ff88;
+    --glow-color: #00d4ff;
+    --danger-color: #ff0055;
+    --warning-color: #ffaa00;
+}
+
+body.light-theme {
+    --primary-color: #0099cc;
+    --dark-bg: #f5f7fa;
+    --panel-bg: rgba(255, 255, 255, 0.9);
+    --border-color: #0099cc;
+    --text-primary: #003d66;
+    --text-secondary: #00aa44;
+    --glow-color: #0099cc;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    font-family: 'Courier New', monospace;
+    background-color: var(--dark-bg);
+    color: var(--text-primary);
+    overflow: hidden;
+}
+
+/* Background Effects */
+.stars-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        radial-gradient(2px 2px at 20% 30%, #eee, rgba(0,0,0,0)),
+        radial-gradient(2px 2px at 60% 70%, #fff, rgba(0,0,0,0)),
+        radial-gradient(1px 1px at 50% 50%, #fff, rgba(0,0,0,0)),
+        radial-gradient(1px 1px at 80% 10%, #fff, rgba(0,0,0,0)),
+        radial-gradient(2px 2px at 90% 60%, #eee, rgba(0,0,0,0));
+    background-repeat: repeat;
+    background-size: 200% 200%;
+    opacity: 0.3;
+    z-index: -2;
+    pointer-events: none;
+}
+
+.grid-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        linear-gradient(0deg, transparent 24%, rgba(0, 212, 255, 0.1) 25%, rgba(0, 212, 255, 0.1) 26%, transparent 27%, transparent 74%, rgba(0, 212, 255, 0.1) 75%, rgba(0, 212, 255, 0.1) 76%, transparent 77%, transparent),
+        linear-gradient(90deg, transparent 24%, rgba(0, 212, 255, 0.1) 25%, rgba(0, 212, 255, 0.1) 26%, transparent 27%, transparent 74%, rgba(0, 212, 255, 0.1) 75%, rgba(0, 212, 255, 0.1) 76%, transparent 77%, transparent);
+    background-size: 50px 50px;
+    opacity: 0.2;
+    z-index: -1;
+    pointer-events: none;
+}
+
+/* Main Container */
+.hud-container {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    gap: 20px;
+}
+
+/* Header */
+.hud-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 30px;
+    padding: 20px;
+    border: 2px solid var(--border-color);
+    border-radius: 10px;
+    background: linear-gradient(135deg, rgba(0, 212, 255, 0.1) 0%, rgba(0, 255, 136, 0.05) 100%);
+    box-shadow: 0 0 20px rgba(0, 212, 255, 0.3), inset 0 0 20px rgba(0, 212, 255, 0.1);
+    position: relative;
+    overflow: hidden;
+}
+
+.hud-header::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(45deg, transparent 30%, rgba(0, 212, 255, 0.1) 50%, transparent 70%);
+    animation: scan-line 3s infinite;
+}
+
+/* ARC Reactor */
+.arc-reactor {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.arc-core {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%, #ffff00, #ff6b00);
+    box-shadow: 0 0 20px #ff6b00, 0 0 40px rgba(255, 107, 0, 0.5);
+    animation: pulse-core 2s infinite;
+}
+
+.arc-ring {
+    position: absolute;
+    border-radius: 50%;
+    border: 2px solid var(--primary-color);
+    box-shadow: inset 0 0 10px rgba(0, 212, 255, 0.5);
+}
+
+.arc-ring-1 {
+    width: 60px;
+    height: 60px;
+    animation: rotate-ring 4s linear infinite;
+}
+
+.arc-ring-2 {
+    width: 80px;
+    height: 80px;
+    animation: rotate-ring 6s linear infinite reverse;
+}
+
+.arc-ring-3 {
+    width: 100px;
+    height: 100px;
+    animation: rotate-ring 8s linear infinite;
+}
+
+.jarvis-title {
+    font-size: 3em;
+    font-weight: bold;
+    text-shadow: 0 0 10px var(--text-primary), 0 0 20px var(--text-primary);
+    letter-spacing: 3px;
+    position: relative;
+    z-index: 1;
+}
+
+.subtitle {
+    font-size: 0.9em;
+    color: var(--text-secondary);
+    text-shadow: 0 0 10px var(--text-secondary);
+    position: relative;
+    z-index: 1;
+}
+
+/* Content Grid */
+.hud-content {
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr;
+    gap: 20px;
+    flex: 1;
+    overflow: hidden;
+}
+
+/* Panels */
+.hud-panel {
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    background: var(--panel-bg);
+    padding: 20px;
+    box-shadow: 0 0 20px rgba(0, 212, 255, 0.2), inset 0 0 20px rgba(0, 212, 255, 0.1);
+    backdrop-filter: blur(10px);
+    overflow-y: auto;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.hud-panel::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--border-color), transparent);
+}
+
+.panel-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid var(--border-color);
+}
+
+.panel-header h2 {
+    font-size: 1.3em;
+    text-shadow: 0 0 10px var(--text-primary);
+    letter-spacing: 2px;
+}
+
+/* Left Panel - City Selection */
+.left-panel {
+    flex-direction: column;
+}
+
+.city-search {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.neon-input {
+    flex: 1;
+    padding: 10px 15px;
+    border: 2px solid var(--border-color);
+    border-radius: 5px;
+    background: rgba(0, 212, 255, 0.1);
+    color: var(--text-primary);
+    font-family: 'Courier New', monospace;
+    font-size: 0.9em;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+.neon-input:focus {
+    box-shadow: 0 0 10px rgba(0, 212, 255, 0.5), inset 0 0 10px rgba(0, 212, 255, 0.1);
+}
+
+.neon-input::placeholder {
+    color: rgba(0, 212, 255, 0.5);
+}
+
+.neon-button {
+    padding: 10px 20px;
+    border: 2px solid var(--border-color);
+    border-radius: 5px;
+    background: rgba(0, 212, 255, 0.1);
+    color: var(--text-primary);
+    cursor: pointer;
+    font-family: 'Courier New', monospace;
+    font-size: 0.9em;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    text-shadow: 0 0 5px var(--text-primary);
+}
+
+.neon-button:hover {
+    background: rgba(0, 212, 255, 0.2);
+    box-shadow: 0 0 15px rgba(0, 212, 255, 0.5), inset 0 0 10px rgba(0, 212, 255, 0.1);
+    transform: scale(1.05);
+}
+
+.neon-button:active {
+    transform: scale(0.98);
+}
+
+.neon-button-lg {
+    width: 100%;
+    padding: 12px 20px;
+    border: 2px solid var(--border-color);
+    border-radius: 5px;
+    background: rgba(0, 212, 255, 0.1);
+    color: var(--text-primary);
+    cursor: pointer;
+    font-family: 'Courier New', monospace;
+    font-size: 0.95em;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    text-shadow: 0 0 5px var(--text-primary);
+    margin-bottom: 15px;
+}
+
+.neon-button-lg:hover {
+    background: rgba(0, 212, 255, 0.2);
+    box-shadow: 0 0 15px rgba(0, 212, 255, 0.5), inset 0 0 10px rgba(0, 212, 255, 0.1);
+}
+
+.neon-button-lg:active {
+    transform: scale(0.98);
+}
+
+.city-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.city-item {
+    padding: 12px 15px;
+    border: 2px solid transparent;
+    border-radius: 5px;
+    background: rgba(0, 212, 255, 0.05);
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-shadow: 0 0 5px rgba(0, 212, 255, 0.3);
+    font-weight: bold;
+}
+
+.city-item:hover {
+    border-color: var(--border-color);
+    background: rgba(0, 212, 255, 0.15);
+    box-shadow: 0 0 10px rgba(0, 212, 255, 0.3);
+    transform: translateX(10px);
+}
+
+.city-item.active {
+    border-color: var(--secondary-color);
+    background: rgba(255, 107, 0, 0.2);
+    box-shadow: 0 0 15px rgba(255, 107, 0, 0.5);
+}
+
+/* Center Panel - Weather Display */
+.center-panel {
+    grid-column: 2;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.weather-display {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    position: relative;
+    z-index: 2;
+}
+
+.loading-indicator {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+.pulse {
+    width: 60px;
+    height: 60px;
+    border: 3px solid var(--border-color);
+    border-radius: 50%;
+    animation: pulse-ring 2s infinite;
+}
+
+.loading-indicator p {
+    font-size: 1.1em;
+    text-shadow: 0 0 10px var(--text-primary);
+    letter-spacing: 1px;
+}
+
+/* Weather Info Card */
+.weather-card {
+    width: 90%;
+    padding: 30px;
+    background: linear-gradient(135deg, rgba(0, 212, 255, 0.1) 0%, rgba(0, 255, 136, 0.05) 100%);
+    border: 2px solid var(--border-color);
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 0 30px rgba(0, 212, 255, 0.3);
+}
+
+.weather-city {
+    font-size: 2em;
+    font-weight: bold;
+    margin-bottom: 10px;
+    text-shadow: 0 0 10px var(--text-primary);
+    letter-spacing: 2px;
+}
+
+.weather-icon {
+    font-size: 4em;
+    margin: 20px 0;
+    animation: float 3s ease-in-out infinite;
+}
+
+.weather-temp {
+    font-size: 3.5em;
+    font-weight: bold;
+    color: var(--secondary-color);
+    text-shadow: 0 0 15px var(--secondary-color);
+    margin: 15px 0;
+}
+
+.weather-description {
+    font-size: 1.3em;
+    color: var(--text-secondary);
+    text-shadow: 0 0 10px var(--text-secondary);
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.weather-details {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 2px solid var(--border-color);
+}
+
+.weather-detail-item {
+    padding: 15px;
+    background: rgba(0, 212, 255, 0.05);
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    text-align: center;
+}
+
+.weather-detail-label {
+    font-size: 0.85em;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+}
+
+.weather-detail-value {
+    font-size: 1.5em;
+    color: var(--primary-color);
+    font-weight: bold;
+    text-shadow: 0 0 10px var(--primary-color);
+}
+
+.globe-canvas {
+    position: absolute;
+    width: 300px;
+    height: 300px;
+    opacity: 0.6;
+}
+
+/* Right Panel - Settings */
+.right-panel {
+    grid-column: 3;
+}
+
+.setting-group {
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.setting-group:last-child {
+    border-bottom: none;
+}
+
+.setting-group label {
+    display: block;
+    font-size: 0.95em;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.toggle-group {
+    display: flex;
+    gap: 10px;
+}
+
+.toggle-btn {
+    flex: 1;
+    padding: 8px 12px;
+    border: 2px solid var(--border-color);
+    border-radius: 5px;
+    background: rgba(0, 212, 255, 0.1);
+    color: var(--text-primary);
+    cursor: pointer;
+    font-family: 'Courier New', monospace;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+.toggle-btn:hover {
+    background: rgba(0, 212, 255, 0.15);
+}
+
+.toggle-btn.active {
+    background: rgba(0, 212, 255, 0.3);
+    box-shadow: 0 0 15px rgba(0, 212, 255, 0.5), inset 0 0 10px rgba(0, 212, 255, 0.2);
+}
+
+.voice-status {
+    font-size: 0.85em;
+    color: var(--accent-color);
+    text-shadow: 0 0 10px var(--accent-color);
+    margin-top: 10px;
+    text-align: center;
+    font-weight: bold;
+}
+
+/* Footer */
+.hud-footer {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 15px 20px;
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    background: rgba(0, 212, 255, 0.05);
+    box-shadow: 0 0 20px rgba(0, 212, 255, 0.2);
+    height: 60px;
+}
+
+.status-item {
+    display: flex;
+    gap: 10px;
+    font-size: 0.9em;
+}
+
+.status-label {
+    color: var(--text-secondary);
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.status-value {
+    color: var(--primary-color);
+    text-shadow: 0 0 10px var(--primary-color);
+    font-weight: bold;
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(0, 212, 255, 0.1);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--border-color);
+    border-radius: 4px;
+    box-shadow: 0 0 10px rgba(0, 212, 255, 0.3);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--secondary-color);
+}
+
+/* Responsive Design */
+@media (max-width: 1400px) {
+    .hud-content {
+        grid-template-columns: 1fr;
+    }
+    
+    .left-panel, .center-panel, .right-panel {
+        grid-column: auto;
+    }
+}
+
+@media (max-width: 768px) {
+    .hud-container {
+        padding: 10px;
+        gap: 10px;
+    }
+    
+    .hud-header {
+        flex-direction: column;
+        gap: 10px;
+        padding: 10px;
+    }
+    
+    .jarvis-title {
+        font-size: 2em;
+    }
+    
+    .weather-temp {
+        font-size: 2.5em;
+    }
+    
+    .weather-details {
+        grid-template-columns: 1fr;
+    }
+}
